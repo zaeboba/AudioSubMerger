@@ -4,14 +4,14 @@ namespace AudioSubMerger;
 
 public class LineOptions
 {
-    [Option("videoPath", Required = true, HelpText = "Путь до папки с видео (абсолютный)")]
+    [Option("vid", Required = true, HelpText = "Путь до папки с видео (абсолютный)")]
     public string VideoPath { get; set; } = null!;
 
-    [Option("audioPath", Default = @"Sounds", Required = false,
+    [Option("aud", Default = @"Sounds", Required = false,
         HelpText = "Путь до папки с аудио (можно абсолютный, можно относительный)")]
     public string AudioPath { get; set; } = @"Sounds";
 
-    [Option("subtitlesPath", Default = @"Subtitles", Required = false,
+    [Option("sub", Default = @"Subtitles", Required = false,
         HelpText = "Путь до папки с субтитрами (можно абсолютный, можно относительный)")]
     public string SubtitlesPath { get; set; } = @"Subtitles";
 
@@ -26,5 +26,4 @@ public class LineOptions
     [Option("subtitleExtensions", Default = new[] { ".ass" }, Required = false,
         HelpText = "Расширения для субтитров через запятую", Separator = ',')]
     public IEnumerable<string> SubtitleExtensions { get; set; } = null!;
-
 }
