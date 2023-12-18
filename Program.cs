@@ -59,6 +59,7 @@ foreach (var videoFile in videoFiles)
         {
             return;
         }
+
         await Console.Out.WriteLineAsync($"[{args.Duration}/{args.TotalLength}][{args.Percent}%] {fileName}");
     };
 

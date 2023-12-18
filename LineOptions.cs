@@ -15,15 +15,15 @@ public class LineOptions
         HelpText = "Путь до папки с субтитрами (можно абсолютный, можно относительный)")]
     public string SubtitlesPath { get; set; } = @"Subtitles";
 
-    [Option("videoExtensions", Default = new[] { ".mkv" }, Required = false,
+    [Option("vidExt", Default = new[] { ".mkv" }, Required = false,
         HelpText = "Расширения для аудио через запятую", Separator = ',')]
     public IEnumerable<string> VideoExtensions { get; set; } = null!;
 
-    [Option("audioExtensions", Default = new[] { ".mka" }, Required = false,
+    [Option("audExt", Default = new[] { ".mka" }, Required = false,
         HelpText = "Расширения для аудио через запятую", Separator = ',')]
     public IEnumerable<string> AudioExtensions { get; set; } = null!;
 
-    [Option("subtitleExtensions", Default = new[] { ".ass" }, Required = false,
+    [Option("subExt", Default = new[] { ".ass" }, Required = false,
         HelpText = "Расширения для субтитров через запятую", Separator = ',')]
     public IEnumerable<string> SubtitleExtensions { get; set; } = null!;
 }

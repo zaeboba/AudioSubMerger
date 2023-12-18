@@ -3,28 +3,22 @@ using Xabe.FFmpeg;
 
 namespace AudioSubMerger.Helpers;
 
-public class SubtitleMergeHelper
+public class SubtitleMergeHelper(IEnumerable<string> subtitleExtensions, string subtitleDirectoriesPath)
 {
-    private readonly string _subtitleDirectoriesPath;
-    private readonly string[] _subtitleExtensions;
+    private readonly string[] _subtitleExtensions = subtitleExtensions.ToArray();
 
-    public SubtitleMergeHelper(IEnumerable<string> subtitleExtensions, string subtitleDirectoriesPath)
-    {
-        _subtitleDirectoriesPath = subtitleDirectoriesPath;
-        _subtitleExtensions = subtitleExtensions.ToArray();
-    }
-    
-        public async Task<IEnumerable<SubtitleStreamInfo>> GetSubtitleStreamsAsync(
+    public async Task<IEnumerable<SubtitleStreamInfo>> GetSubtitleStreamsAsync(
         IMediaInfo mediaInfo,
         string videoName)
     {
         Console.WriteLine("Получаем субтитры");
 
         var subtitleStreams = new List<SubtitleStreamInfo>();
-        var subtitleDirectories = GeneralHelper.GetDirectoriesFromPath(_subtitleDirectoriesPath)
+        var subtitleDirectories = GeneralHelper.GetDirectoriesFromPath(subtitleDirectoriesPath)
             .OrderBy(t => t.Name)
             .ToList();
-        var numberedSubtitleDirectories = subtitleDirectories.Where(t => char.IsDigit(t.Name.FirstOrDefault())).ToList();
+        var numberedSubtitleDirectories =
+            subtitleDirectories.Where(t => char.IsDigit(t.Name.FirstOrDefault())).ToList();
         var otherSubtitleDirectories = subtitleDirectories.Except(numberedSubtitleDirectories);
         foreach (var subtitleDirectory in numberedSubtitleDirectories)
         {
@@ -38,7 +32,7 @@ public class SubtitleMergeHelper
         }
 
         subtitleStreams.AddRange(mediaInfo.SubtitleStreams.Select(originalSubtitleStream =>
-            new SubtitleStreamInfo(originalSubtitleStream)));
+            new SubtitleStreamInfo(originalSubtitleStream, originalSubtitleStream.Title)));
 
         foreach (var subtitleDirectory in otherSubtitleDirectories)
         {
@@ -56,12 +50,20 @@ public class SubtitleMergeHelper
 
     public void AddSubtitleStreamsToConversion(IConversion conversion, List<SubtitleStreamInfo> subtitleStreams)
     {
+        var subtitleStreamIndex = 0;
+
         foreach (var subtitleStream in subtitleStreams)
         {
             conversion.AddStream(subtitleStream.Stream);
+            if (!string.IsNullOrWhiteSpace(subtitleStream.Name))
+            {
+                conversion.AddParameter($" -metadata:s:s:{subtitleStreamIndex} title=\"{subtitleStream.Name}\"");
+            }
+
+            subtitleStreamIndex++;
         }
     }
-    
+
     private async Task<SubtitleStreamInfo?> GetStreamFromDirectory(string videoName, DirectoryInfo subtitleDirectory)
     {
         var subtitleFile = subtitleDirectory
@@ -80,7 +82,6 @@ public class SubtitleMergeHelper
             return null;
         }
 
-        return new SubtitleStreamInfo(subtitleStream);
+        return new SubtitleStreamInfo(subtitleStream, subtitleDirectory.Name);
     }
-
 }

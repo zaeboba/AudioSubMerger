@@ -2,12 +2,8 @@ using Xabe.FFmpeg;
 
 namespace AudioSubMerger.Models;
 
-public class SubtitleStreamInfo
+public class SubtitleStreamInfo(IStream stream, string? name)
 {
-    public SubtitleStreamInfo(IStream stream)
-    {
-        Stream = stream;
-    }
-
-    public IStream Stream { get; set; }
+    public IStream Stream { get; set; } = stream;
+    public string? Name { get; set; } = name;
 }

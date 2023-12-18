@@ -68,12 +68,12 @@ public class AudioMergeHelper
             {
                 conversion.AddParameter($" -metadata:s:a:{audioStreamIndex} title=\"{audioStream.Title}\"");
             }
-            
+
             if (!string.IsNullOrEmpty(audioStream.Language))
             {
                 conversion.AddParameter($" -metadata:s:a:{audioStreamIndex} language=\"{audioStream.Language}\"");
             }
-            
+
             audioStreamIndex++;
         }
     }
