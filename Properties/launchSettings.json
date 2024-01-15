@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AudioSubMerger": {
+      "commandName": "Project",
+      "commandLineArgs": "--vid \"C:\\Users\\Tim\\Downloads\\aud\" --aud \"C:\\Users\\Tim\\Downloads\\aud\\aud\" --audExt \".mka\" --sub \"C:\\Users\\Tim\\Downloads\\aud\\sub\" --subExt \".srt\""
+    }
+  }
+}
